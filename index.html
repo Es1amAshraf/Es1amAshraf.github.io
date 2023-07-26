@@ -12,7 +12,9 @@ function addSME(name) {
   li.appendChild(select);
   var deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
-  deleteButton.style.marginLeft = "10px";
+  deleteButton.addEventListener("click", function() {
+    list.removeChild(li);
+  });
   li.appendChild(deleteButton);
   list.appendChild(li);
 }
