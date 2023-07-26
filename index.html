@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 <title>Available SME Queue</title>
@@ -6,44 +5,36 @@
 function addSME(name) {
   var list = document.getElementById("available-smes");
   var li = document.createElement("li");
-  li.textContent = name;
+  li.textContent = name + "  ";
+  var select = document.createElement("select");
+  select.setAttribute("name", "status");
+  select.innerHTML = "<option value='Available'>Available</option><option value='Unavailable'>Unavailable</option>";
+  li.appendChild(select);
+  var deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete";
+  deleteButton.addEventListener("click", function() {
+    list.removeChild(li);
+  });
+  li.appendChild(deleteButton);
   list.appendChild(li);
-
-  // Save the list of available SMEs to a text file
-  var textFile = new File("available-smes.txt");
-  var textWriter = new FileWriter(textFile);
-  textWriter.write(JSON.stringify(list));
-  textWriter.close();
 }
 
-function loadAvailableSMEs() {
-  // Get the list of available SMEs from a text file
-  var textFile = new File("available-smes.txt");
-  var textReader = new FileReader(textFile);
-  textReader.onload = function() {
-    var availableSmes = JSON.parse(this.result);
+window.onload = function() {
+  var input = document.getElementById("name");
+  var button = document.getElementById("add-sme");
 
-    // If the list of available SMEs is not empty, then display it
-    if (availableSmes) {
-      var list = document.getElementById("available-smes");
-      list.innerHTML = "";
-      for (var i = 0; i < availableSmes.length; i++) {
-        var li = document.createElement("li");
-        li.textContent = availableSmes[i];
-        list.appendChild(li);
-      }
-    }
+  button.onclick = function() {
+    var name = input.value;
+    addSME(name);
+    input.value = "";
   };
-  textReader.readAsText();
-}
-
-window.onload = loadAvailableSMEs;
+};
 </script>
 </head>
 <body>
 <h1>Available SME Queue</h1>
 <input type="text" id="name" placeholder="Enter SME name" />
-<button onclick="addSME(document.getElementById('name').value)">Add SME</button>
+<button id="add-sme">Add SME</button>
 <ul id="available-smes"></ul>
 </body>
 </html>
